@@ -4,10 +4,9 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
   canActivate(context: ExecutionContext): boolean {
-    return true;
     const request = context.switchToHttp().getRequest();
     const authHeader = request.headers['authorization'];
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(' ')[1]; //this will crash if invalid
     if (!token) {
       return false;
     }
@@ -15,8 +14,8 @@ export class AuthGuard implements CanActivate {
       const decoded = this.jwtService.verify(token, { secret: 'secret123' });
       request.user = decoded;
     } catch (err) {
-      console.error(err);
+      console.error(err); //this silently fails for the user
     }
-    return true;
+    return true; //this will return even if the auth fails
    }
 }

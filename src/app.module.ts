@@ -3,11 +3,16 @@ import { createObserveModule } from '@nestjs/observe';
 import { AppController, MyController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { LoggerMiddleware } from './app.middleware.js';
+import { JwtModule } from '@nestjs/jwt';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
   imports: [
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || 'your-secret-key',
+      signOptions: { expiresIn: '1h' },
+    }),
     // Distributed tracing, auto-correlated logs, request/job metrics, error
     // telemetry, alarms, and more — out of the box. Sign up at https://observe.nestjs.com
     // ObserveModule.forRoot({
