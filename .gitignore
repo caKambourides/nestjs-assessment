@@ -2,6 +2,7 @@
 
 # project files
 .env
+database.sqlite
 
 # compiled output
 /dist

@@ -4,7 +4,9 @@ import { AppController, MyController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { LoggerMiddleware } from './app.middleware.js';
 import { JwtModule } from '@nestjs/jwt';
-
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Stream } from './stream.entity.js';
+import { StreamingModule } from './streaming/streaming.module.js';
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
@@ -13,6 +15,17 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       secret: process.env.JWT_SECRET || 'your-secret-key',
       signOptions: { expiresIn: '1h' },
     }),
+
+    TypeOrmModule.forRoot({
+      type: 'better-sqlite3',
+      database: 'database.sqlite',
+      autoLoadEntities: true,
+      entities: [Stream],
+      synchronize: true, //set to false for prod
+    }),
+
+    StreamingModule,
+
     // Distributed tracing, auto-correlated logs, request/job metrics, error
     // telemetry, alarms, and more — out of the box. Sign up at https://observe.nestjs.com
     // ObserveModule.forRoot({
