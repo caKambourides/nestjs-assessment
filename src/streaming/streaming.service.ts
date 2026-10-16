@@ -32,11 +32,12 @@ export class StreamingService {
     private readonly streamRepository: Repository<Stream>,
   ) {}
 
-  async findAll(page = 1, limit = 10): Promise<PaginatedStreamsResponse> {
+  async findAll(page = 1, limit = 10, genre?: string): Promise<PaginatedStreamsResponse> {
     const safeLimit = Math.min(Math.max(limit, 1), 100);
     const safePage = Math.max(page, 1);
 
     const [streams, total] = await this.streamRepository.findAndCount({
+      where: genre ? {genre} : {},
       skip: (safePage - 1) * safeLimit,
       take: safeLimit,
       order: { id: 'ASC' },

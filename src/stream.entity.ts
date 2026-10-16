@@ -11,6 +11,10 @@ export class Stream {
   @Column()
   description: string;
 
+  @Column()
+  genre: string;
+
+
   @Column({name: "thumbnail_url"})
   thumbnailUrl: string;
 
