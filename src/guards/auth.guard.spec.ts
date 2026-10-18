@@ -29,7 +29,7 @@ describe('AuthGuard', () => {
       const result = guard.canActivate(context);
 
       expect(result).toBe(true);
-      expect(verify).toHaveBeenCalledWith('valid.token', { secret: 'secret123' });
+      expect(verify).toHaveBeenCalledWith('valid.token');
       expect(context.switchToHttp().getRequest().user).toEqual(payload);
     });
   });
