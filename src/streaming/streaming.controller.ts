@@ -11,13 +11,17 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '../guards/auth.guard.js';
 import { StreamingService, StreamResponse, PaginatedStreamsResponse } from './streaming.service.js';
 import { CreateStreamDto } from './dto/create-stream.dto.js';
 import { UpdateStreamDto } from './dto/update-stream.dto.js';
 
 @ApiTags('streaming')
+@ApiBearerAuth()
+@UseGuards(AuthGuard)
 @Controller('api/streaming')
 export class StreamingController {
   constructor(private readonly streamingService: StreamingService) {}

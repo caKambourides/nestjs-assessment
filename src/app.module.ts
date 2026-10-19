@@ -14,7 +14,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
   imports: [
     TypeOrmModule.forRoot({
       type: 'better-sqlite3',
-      database: 'database.sqlite',
+      database: process.env.DATABASE_PATH || 'database.sqlite',
       autoLoadEntities: true,
       entities: [Stream, User],
       synchronize: true, //set to false for prod
