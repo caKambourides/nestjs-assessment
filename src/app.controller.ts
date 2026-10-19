@@ -16,10 +16,4 @@ export class AppController {
 @UseGuards(AuthGuard)
 export class MyController {
   constructor(private readonly appService: AppService) {}
-
-  @Get('world')
-  getHello(): string {
-    return 'aawdaw';
-    return this.appService.getHello();
-  }
 }
