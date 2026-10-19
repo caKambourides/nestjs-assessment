@@ -13,7 +13,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../guards/auth.guard.js';
 import { StreamingService, StreamResponse, PaginatedStreamsResponse } from './streaming.service.js';
 import { CreateStreamDto } from './dto/create-stream.dto.js';
@@ -27,6 +27,7 @@ export class StreamingController {
   constructor(private readonly streamingService: StreamingService) {}
 
   @Get()
+  @ApiQuery({ name: 'genre', required: false })
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
