@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
   UnauthorizedException,
@@ -28,7 +27,6 @@ export interface SafeUser {
   updated_at: Date;
 }
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SALT_ROUNDS = 10;
 
 @Injectable()
@@ -41,7 +39,6 @@ export class AuthService {
 
   async register(dto: RegisterDto): Promise<SafeUser> {
     const { email, password } = dto;
-    this.validateCredentials(email, password);
 
     const existing = await this.usersRepository.findOne({ where: { email } });
     if (existing) {
@@ -58,10 +55,6 @@ export class AuthService {
   async login(dto: LoginDto): Promise<AuthResponse> {
     const { email, password } = dto;
 
-    if (!email || !password) {
-      throw new BadRequestException('Email and password are required');
-    }
-
     const user = await this.usersRepository.findOne({ where: { email } });
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -76,18 +69,6 @@ export class AuthService {
     const access_token = this.jwtService.sign(payload);
 
     return { access_token };
-  }
-
-  private validateCredentials(email: string, password: string): void {
-    if (!email || !password) {
-      throw new BadRequestException('Email and password are required');
-    }
-    if (!EMAIL_REGEX.test(email)) {
-      throw new BadRequestException('Invalid email address');
-    }
-    if (password.length < 6) {
-      throw new BadRequestException('Password must be at least 6 characters');
-    }
   }
 
   private toSafeUser(user: User): SafeUser {

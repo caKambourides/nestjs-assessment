@@ -1,4 +1,4 @@
-import { ExecutionContext } from '@nestjs/common';
+import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from './auth.guard.js';
 
@@ -35,33 +35,30 @@ describe('AuthGuard', () => {
   });
 
   describe('missing authorization header', () => {
-    it('should deny access without crashing', () => {
+    it('should deny access with 401', () => {
       const context = createContext();
 
-      expect(() => guard.canActivate(context)).not.toThrow();
-      expect(guard.canActivate(context)).toBe(false);
+      expect(() => guard.canActivate(context)).toThrow(UnauthorizedException);
     });
   });
 
   describe('invalid or expired token', () => {
-    it('should deny access and not attach a user', () => {
+    it('should deny access with 401 and not attach a user', () => {
       verify.mockImplementation(() => {
         throw new Error('invalid token');
       });
       const context = createContext({ authorization: 'Bearer invalid.token' });
 
-      const result = guard.canActivate(context);
-
-      expect(result).toBe(false);
+      expect(() => guard.canActivate(context)).toThrow(UnauthorizedException);
       expect(context.switchToHttp().getRequest().user).toBeUndefined();
     });
   });
 
   describe('missing token after Bearer', () => {
-    it('should deny access', () => {
+    it('should deny access with 401', () => {
       const context = createContext({ authorization: 'Bearer' });
 
-      expect(guard.canActivate(context)).toBe(false);
+      expect(() => guard.canActivate(context)).toThrow(UnauthorizedException);
     });
   });
 });
