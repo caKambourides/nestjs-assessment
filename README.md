@@ -28,16 +28,16 @@ A REST API built with [NestJS](https://nestjs.com/) and TypeORM, backed by SQL. 
 # install dependencies
 npm install
 
-# start in development mode (watch)
-npm run start:dev
+# start in development mode 
+./start.sh
 ```
 
 The server starts on http://localhost:3000 by default. Swagger docs are available at http://localhost:3000/docs.
 
 ## Auth Flow
-- Register account using the Register endpoint
-- Log in
-- Store the bearer token to use in the API
+- Register account using the /auth/register endpoint
+- Log in using the /auth/login endpoint with your credentials
+- Store the bearer token to use in the API 
 
 ## Tests
 - `npm run test` — unit tests (guard, controller).
