@@ -9,6 +9,7 @@ export interface StreamResponse {
   id: number;
   title: string;
   description: string;
+  genre: string;
   thumbnail_url: string;
   video_url: string;
   created_at: Date;
@@ -66,6 +67,7 @@ export class StreamingService {
     const stream = this.streamRepository.create({
       title: dto.title,
       description: dto.description,
+      genre: dto.genre,
       thumbnailUrl: dto.thumbnail_url,
       videoUrl: dto.video_url,
     });
@@ -81,6 +83,7 @@ export class StreamingService {
 
     if (dto.title !== undefined) stream.title = dto.title;
     if (dto.description !== undefined) stream.description = dto.description;
+    if (dto.genre !== undefined) stream.genre = dto.genre;
     if (dto.thumbnail_url !== undefined) stream.thumbnailUrl = dto.thumbnail_url;
     if (dto.video_url !== undefined) stream.videoUrl = dto.video_url;
 
@@ -101,6 +104,7 @@ export class StreamingService {
       id: stream.id,
       title: stream.title,
       description: stream.description,
+      genre: stream.genre,
       thumbnail_url: stream.thumbnailUrl,
       video_url: stream.videoUrl,
       created_at: stream.createdAt,

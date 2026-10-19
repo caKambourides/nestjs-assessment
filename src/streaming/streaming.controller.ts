@@ -26,8 +26,9 @@ export class StreamingController {
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('genre') genre?: string,
   ): Promise<PaginatedStreamsResponse> {
-        return this.streamingService.findAll(page, limit);
+    return this.streamingService.findAll(page, limit, genre);
   }
 
   @Get(':id')
